@@ -5,6 +5,7 @@ from django.contrib.auth import login, authenticate
 from django.contrib.auth.forms import AuthenticationForm
 from .forms import SignUpForm
 from django.contrib import messages
+from django.contrib.auth import logout
 from . import views
 
 def home(request):
@@ -25,20 +26,27 @@ def signup(request):
     return render(request, 'accounts/signup.html', {'form': form})
 
 
+
 def login_view(request):
-    if request.method == 'POST': 
+    if request.method == 'POST':
         username = request.POST['username']
         password = request.POST['password']
         user = authenticate(request, username=username, password=password)
+
         if user is not None:
             login(request, user)
-            return redirect('home')  # 로그인 성공 시 리디렉션할 URL
+            return redirect('home')
         else:
-            messages.error(request, 'Invalid username or password')
-    return render(request, 'login.html')
+            messages.error(request, '아이디 또는 비밀번호가 잘못되었습니다.')
+            return render(request, 'login.html')  # 수정된 부분
+    else:
+        return render(request, 'login.html')
 
-def home_view(request):
-    return render(request, 'home.html')
+
+def logout_view(request):
+    logout(request)
+    return redirect('login_view')  
+
 
 def password_reset(request):
     return render(request, 'accounts/password_reset.html')

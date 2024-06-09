@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Login</title>
+    <!-- Add Bootstrap CSS -->
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+    />
+  </head>
+  <body>
+    <div class="container">
+      <div class="row justify-content-center">
+        <div class="col-md-6">
+          <h2 class="text-center">로그인</h2>
+          {% if messages %}
+          <ul class="alert alert-danger">
+            {% for message in messages %}
+            <li>{{ message }}</li>
+            {% endfor %}
+          </ul>
+          {% endif %}
+          <form method="post">
+            {% csrf_token %}
+            <div class="form-group">
+              <input
+                type="text"
+                name="username"
+                placeholder="Username"
+                class="form-control"
+              />
+            </div>
+            <div class="form-group">
+              <input
+                type="password"
+                name="password"
+                placeholder="Password"
+                class="form-control"
+              />
+            </div>
+            <button type="submit" class="btn btn-primary">Login</button>
+          </form>
+          <hr />
+          <p>계정생성<a href="{% url 'signup' %}"> 계정 생성</a></p>
+          <p>
+            비밀번호 재설정
+            <a href="{% url 'password_reset' %}">비밀번호 재설정</a>
+          </p>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
