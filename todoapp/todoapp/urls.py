@@ -17,6 +17,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import include, path
 from accounts import views
+from todo import views as todo_views
 
 urlpatterns = [
     path('', views.home, name='home'),
@@ -25,4 +26,9 @@ urlpatterns = [
     path('accounts/', include('django.contrib.auth.urls')),  # 추가
     path('signup/', views.signup, name='signup'),
     path('login/', views.login_view, name='login'),
+    path('todo_list/', views.todo_list, name='todo_list'),
+    path('test_message/', views.test_message, name='test_message'),
+    path('__debug__/', include('debug_toolbar.urls')),
+    path('<int:pk>/', todo_views.todo_detail, name='todo_detail'),
+    path('todo_detail/', todo_views.todo_detail, name='todo_detail')
 ]

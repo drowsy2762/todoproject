@@ -12,16 +12,18 @@
     <div class="container">
       <div class="row justify-content-center">
         <div class="col-md-6">
-          <h2 class="text-center">로그인</h2>
           {% if messages %}
-          <ul class="alert alert-danger">
+          <div class="messages">
             {% for message in messages %}
-            <li>{{ message }}</li>
+            <div class="alert alert-{{ message.tags }} mt-3">{{ message }}</div>
             {% endfor %}
-          </ul>
+          </div>
           {% endif %}
+          <h2 class="text-center">로그인</h2>
           <form method="post">
-            {% csrf_token %}
+            {% csrf_token %} {{ form.non_field_errors }} {% if form.errors %}
+            <div class="alert alert-danger">{{ form.errors }}</div>
+            {% endif %}
             <div class="form-group">
               <input
                 type="text"
@@ -38,6 +40,7 @@
                 class="form-control"
               />
             </div>
+
             <button type="submit" class="btn btn-primary">Login</button>
           </form>
           <hr />

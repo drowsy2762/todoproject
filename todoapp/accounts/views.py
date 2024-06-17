@@ -19,30 +19,44 @@ def signup(request):
             username = form.cleaned_data.get('username')
             raw_password = form.cleaned_data.get('password1')
             user = authenticate(username=username, password=raw_password)
-            login(request, user)
-            return redirect('home')
-    else:
-        form = SignUpForm()
+            if user is not None:
+                login(request, user)
+                return redirect('todo_list')  
+            else:
+                messages.error(request, '사용자 인증에 실패했습니다.')
+                return render(request, 'accounts/signup.html', {'form': form})
+        else:
+            messages.error(request, '폼이 유효하지 않습니다. 다시 시도해 주세요.')
+    form = SignUpForm()
     return render(request, 'accounts/signup.html', {'form': form})
 
-
+# accounts/views.py
+import logging
+logger = logging.getLogger(__name__)
 
 def login_view(request):
     if request.method == 'POST':
-        username = request.POST['username']
-        password = request.POST['password']
-        user = authenticate(request, username=username, password=password)
-
-        if user is not None:
-            login(request, user)
-            return redirect('home')
+        form = AuthenticationForm(request, data=request.POST)
+        if form.is_valid():
+            username = form.cleaned_data.get('username')
+            password = form.cleaned_data.get('password')
+            user = authenticate(username=username, password=password)
+            if user is not None:
+                login(request, user)
+                logger.debug(f'Login successful for user: {username}')
+                return redirect('todo_list')  # URL 이름 확인 필요
+            else:
+                messages.error(request, '사용자 인증에 실패했습니다.')
+                logger.debug(f'User authentication failed for user: {username}')
         else:
-            messages.error(request, '아이디 또는 비밀번호가 잘못되었습니다.')
-            return render(request, 'login.html')  # 수정된 부분
+            messages.error(request, 'Invalid username or password.')
+            logger.debug(f'Invalid form data for user: {request.POST.get("username")}')
     else:
-        return render(request, 'login.html')
+        form = AuthenticationForm()
+        logger.debug('GET 요청')
 
-
+    return render(request, 'accounts/login.html', {'form': form})
+    
 def logout_view(request):
     logout(request)
     return redirect('login_view')  
@@ -51,5 +65,9 @@ def logout_view(request):
 def password_reset(request):
     return render(request, 'accounts/password_reset.html')
 
+def todo_list(request):
+    return render(request, 'todo/todo_list.html')
 
-
+def test_message(request):
+    messages.success(request, '성공 메시지 테스트입니다.') 
+    return render(request, 'accounts/test_message.html')

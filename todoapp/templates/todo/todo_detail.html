@@ -1,0 +1,21 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <!-- Required meta tags -->
+  <!-- Bootstrap CSS  생략-->
+  
+  <title>TODO LIST</title>
+</head>
+<body>
+<div class="container">
+  <h1>TODO 상세보기</h1>
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">{{ todo.title }}</h5>
+            <p class="card-text">{{ todo.description }}</p>
+            <a href="{% url 'todo_list' %}" class="btn btn-primary">목록으로</a>
+<!-- 닫는 태그 생략 , 스크립트 생략-->
+</html>

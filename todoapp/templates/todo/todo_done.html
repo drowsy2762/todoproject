@@ -1,0 +1,43 @@
+{% comment %} todo done {% endcomment %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <!-- Bootstrap CSS 생략-->
+
+    <title>TODO LIST</title>
+  </head>
+  <body>
+    <div class="container">
+      <h1>완료된 TODO LIST</h1>
+      <div class="container">
+        <div class="row">
+          <div class="col-md-12">
+            <div class="card">
+              <div class="card-body">
+                <table class="table">
+                  <thead>
+                    <tr>
+                      <th scope="col">제목</th>
+                      <th scope="col">내용</th>
+                      <th scope="col">완료일</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {% for todo in todos %}
+                    <tr>
+                      <td>{{ todo.title }}</td>
+                      <td>{{ todo.description }}</td>
+                      <td>{{ todo.completed_at }}</td>
+                    </tr>
+                    {% endfor %}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
